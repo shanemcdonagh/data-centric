@@ -2,78 +2,48 @@
 var express = require("express");
 var app = express();
 
-var path = require("path");
+// EJS - Templating language that uses JavaScript syntax
+var ejs = require('ejs');
+app.set('view engine','ejs');
 
-// Parses incoming request bodies
-var bodyParser = require('body-parser');
+// Import mySQL DAO file 
+var mysql = require("./mysqlDAO");
 
-// MongoDB connection
-var MongoClient = require('mongodb').MongoClient;
+// Listening for connections to port 3000
+app.listen(3000, () =>{
 
-// MySQL connection
-var mysql = require('mysql');
+    console.log("Listening on port 3000")
+})
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'collegedb'
-  })
+// Listens for get request to '/'
+app.get('/', (req,res)=>{
+    res.sendFile(__dirname + "/home.html")
+})
 
-connection.connect();
-
-// Array to store lecturers
-var lecturers = [];
-
-// Middleware function (Is run first)
-app.use(bodyParser.urlencoded({extended: false}))
-
-// Connect to MongoDB
-MongoClient.connect('mongodb://localhost:27017/lecturersDB', function (err, client) {
-    if (err) throw err
-
-    var db = client.db('lecturersDB')
-
-    db.collection('lecturers').find().toArray(function (err, result) {
-        if (err) throw err
-
-        // Initialise lecturers array 
-        lecturers = result;
-
-        // Output to console
-        console.log(lecturers);
-        
-        // Close connection to MongoDB server
-        client.close();
-    })
-
-    // Listening to requests received through port 3004
-    app.listen(3004, () => {
-        console.log("App running on port 3004");
-    })
-
-    // Responds to client request from '/' and redirects to '/home'
-    app.get('/', (req, res) => {
-        res.redirect("/lecturers");
-    })
+// // Listens for get request to '/students'
+app.get('/students', (req,res)=>{
     
-    // Responds to client request from'/lecturers' with array of employees
-    app.get('/lecturers', (req, res) => {
-        res.send(lecturers);
+    // Invoke function from DAO
+    mysql.retrieveStudents()
+    .then((data) => {
+        // Pass retrieved data to students.ejs as 'students'
+        res.render("listStudents",{students: data});
     })
+    .catch((error) => {
+        res.send('Error while retrieving students');
+    })
+})
 
-    // Responds to client request from'/lecturers' with array of employees
-    app.get('/modules', (req, res) => {
-       
-        connection.query('select * from module', function (err, rows, fields) {
-            if (err) throw err
-          
-            console.log(rows)
-          })
-          
-          connection.end();
-       
-       
-        res.send(lecturers);
+// // Listens for get request to '/students'
+app.get('/modules', (req,res)=>{
+    
+    // Invoke function from DAO
+    mysql.retrieveModules()
+    .then((data) => {
+        // Pass retrieved data to module.ejs as 'module'
+        res.render("listModules",{modules: data});
+    })
+    .catch((error) => {
+        res.send('Error while retrieving modules');
     })
 })
