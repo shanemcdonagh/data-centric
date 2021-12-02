@@ -45,5 +45,64 @@ function retrieveModules(){
     })
 }
 
+// Function - Retrieves specified module from the database
+function retrieveModule(mid){
+    return new Promise((resolve,reject) =>{
+        
+        var myQuery = {
+            sql: "SELECT * from module WHERE mid = ?",
+            values: [mid]
+        }
+        
+        pool.query(myQuery)
+        .then((data) => {
+            resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    })
+}
+
+function updateModule(name,credits,mid){
+    return new Promise((resolve,reject) =>{
+        
+        var myQuery = {
+            sql: "UPDATE module SET name = ?, credits = ? WHERE mid = ?",
+            values: [name,credits,mid]
+        }
+        
+        pool.query(myQuery)
+        .then((data) => {
+            resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    })
+}
+
+function studyingModule(mid){
+    return new Promise((resolve,reject) =>{
+        
+        var myQuery = { 
+            sql: "SELECT m.mid,s.name,s.sid,s.name,s.gpa from student_module m INNER JOIN student s ON m.sid = s.sid WHERE m.mid = ?;",
+            values: [mid]
+        }
+        
+        pool.query(myQuery)
+        .then((data) => {
+            resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    })
+}
+
+
+
+
+
 // Export - For use in index.js
-module.exports = {retrieveStudents, retrieveModules};
+module.exports = {retrieveStudents, retrieveModules, retrieveModule, updateModule, studyingModule};

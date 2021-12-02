@@ -6,22 +6,19 @@
     }
 </style>
 
-<h1>Students</h1>
-<button type="button">Add Student</button><br>
+<h1>Students studying <%= mid %></h1>
 <table>
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>GPA</th>
-        <th>Action</th>
     </tr>
     <% students.forEach((student) => { %>
         <tr>
             <td><%= student.sid %></td>
             <td><%= student.name %></td>
             <td><%= student.gpa %></td>
-            <td>Delete</td>
         </tr>
         <% }) %>
 </table>
-<a href="/">Home</p>
+        <a href="/">Home</p>
