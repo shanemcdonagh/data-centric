@@ -1,3 +1,4 @@
+<!-- Applies styling to the table element -->
 <style>
     table,
     th,
@@ -6,23 +7,37 @@
     }
 </style>
 
-<h1>Modules</h1>
-<table>
-    <tr>
-        <th>Module ID</th>
-        <th>Name</th>
-        <th>Credits</th>
-        <th>Update</th>
-        <th>Students</th>
-    </tr>
-    <% modules.forEach((module) => { %>
+<body>
+    <h1>Modules</h1>
+    <table>
         <tr>
-            <td><%= module.mid %></td>
-            <td><%= module.name %></td>
-            <td><%= module.credits %></td>
-            <td><a href="/module/edit/<%= module.mid %>">Update</a></td>
-            <td><a href="/module/students/<%= module.mid %>">List</a></td>
+            <th>Module ID</th>
+            <th>Name</th>
+            <th>Credits</th>
+            <th>Update</th>
+            <th>Students</th>
         </tr>
-        <% }) %>
-</table>
-<a href="/">Home</p>
+        <!-- Displays each object within the passed in array (from index.js)(EJS)-->
+        <% modules.forEach((module)=> { %>
+            <tr>
+                <td>
+                    <%= module.mid %>
+                </td>
+                <td>
+                    <%= module.name %>
+                </td>
+                <td>
+                    <%= module.credits %>
+                </td>
+
+                <!-- Buttons for each entry, making GET requests to separate paths 
+                (Update a module, list all students studying the current module) -->
+                <td><a href="/module/edit/<%= module.mid %>">Update</a></td>
+                <td><a href="/module/students/<%= module.mid %>">List</a></td>
+            </tr>
+            <% }) %>
+    </table>
+
+    <!-- Links back to the home page (home.html) -->
+    <a href="/">Home</p>
+</body>

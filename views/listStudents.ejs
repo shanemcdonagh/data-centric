@@ -1,3 +1,4 @@
+<!-- Applies styling to the table element -->
 <style>
     table,
     th,
@@ -6,22 +7,37 @@
     }
 </style>
 
-<h1>Students</h1>
-<button type="button">Add Student</button><br>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>GPA</th>
-        <th>Action</th>
-    </tr>
-    <% students.forEach((student) => { %>
+<body>
+    <h1>Students</h1>
+
+    <!-- Button used to re-direct to the addStudent page (GET request to '/addStudent')-->
+    <button type="button"><a href="/addStudent">Add Student</a></button><br><br>
+    <table>
         <tr>
-            <td><%= student.sid %></td>
-            <td><%= student.name %></td>
-            <td><%= student.gpa %></td>
-            <td>Delete</td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>GPA</th>
+            <th>Action</th>
         </tr>
-        <% }) %>
-</table>
-<a href="/">Home</p>
+        <!-- Displays each object within the passed in array (from index.js)(EJS)-->
+        <% students.forEach((student)=> { %>
+            <tr>
+                <td>
+                    <%= student.sid %>
+                </td>
+                <td>
+                    <%= student.name %>
+                </td>
+                <td>
+                    <%= student.gpa %>
+                </td>
+
+                <!-- Each entry has a link which makes a GET request to specified path (handled by index.js to remove a student) -->
+                <td><a href="/students/delete/<%= student.sid %>">Delete</a></td>
+            </tr>
+            <% }) %>
+    </table>
+
+    <!-- Links back to the home page (home.html) -->
+    <p><a href="/">Home</p>
+</body>

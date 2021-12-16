@@ -1,8 +1,8 @@
-<!-- editModule - Enables users to update a module within the database -->
+<!-- editModule Page - Enables users to update a module within the SQL database -->
 <body>
     <h1>Edit Module</h1>
 
-    <!-- If there are any errors (outside of conditions), they will display here -->
+    <!-- If there are any errors passed to the page, they will display here -->
     <% if (errors !=undefined){%>
         <ul>
             <%errors.forEach((error)=> { %>
@@ -14,17 +14,22 @@
     <% } %>
 
     <!-- Enables user to input values to update -->
+    <!-- When submitted, makes a POST request to '/module/edit/:mid' -->
     <form action="/module/edit/<%= module.mid %>" method="POST">
-        <label>Module ID</label>
-        
+        <label>Module ID</label>    
         <!-- First field is marked as readonly -->
         <input type="text" name="mid" value=<%=module.mid %> readonly><br>
+        
         <label>Name</label>
         <input type="text" name="name" value="<%= module.name %>"><br>
+        
         <label>Credits</label>
         <input type="text" name="credits" value="<%= module.credits %>"><br>
-        <input type="submit" value="Add">
+        
+        <!-- On click, will make a POST request to specified url -->
+        <input type="submit" value="Update">
     </form>
-    <a href="/">Home</p>
 
+    <!-- Links back to the home page (home.html) -->
+    <a href="/">Home</p>
 </body>

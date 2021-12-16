@@ -1,0 +1,34 @@
+<!-- addStudent Page - Enables users to add a student (record/row) within the MYSQL database (student table) -->
+<body>
+    <h1>Add Student</h1>
+
+    <!-- If there are any errors passed to the page, they will display here -->
+    <% if (errors !=undefined){%>
+        <ul>
+            <%errors.forEach((error)=> { %>
+                <li>
+                    <%=error.msg %>
+                </li>
+            <% })%>
+        </ul>
+    <% } %>
+
+    <!-- Enables user to input values for a new student -->
+    <!-- When submitted, makes a POST request to '/addStudent' -->
+    <form action="/addStudent" method="POST">
+        <label>Student ID</label>
+        <input type="text" name="sid" value="<%= sid %>"><br>
+        
+        <label>Name</label>
+        <input type="text" name="name" value="<%= name %>"><br>
+        
+        <label>GPA</label>
+        <input type="text" name="gpa" value="<%= gpa %>">
+
+        <!-- On click, will make a POST request to specified url -->
+        <input type="submit" value="Add">
+    </form>
+
+    <!-- Links back to the home page (home.html) -->
+    <a href="/">Home</p>
+</body>

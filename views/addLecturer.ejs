@@ -1,0 +1,34 @@
+<!-- addLecturer Page - Enables users to add a lecturer to the MongoDB lecturers collection -->
+<body>
+    <h1>Add Lecturer</h1>
+
+    <!-- If there are any errors passed to the page, they will display here -->
+    <% if (errors !=undefined){%>
+        <ul>
+            <%errors.forEach((error)=> { %>
+                <li>
+                    <%=error.msg %>
+                </li>
+            <% })%>
+        </ul>
+    <% } %>
+
+    <!-- Enables user to input values to add the lecturer -->
+    <!-- When submitted, makes a POST request to '/addLecturer' -->
+    <form action="/addLecturer" method="POST">
+        <label>Lecturer ID</label>
+        <input type="text" name="_id" value="<%= _id %>"><br>
+
+        <label>Name</label>
+        <input type="text" name="name" value="<%= name %>"><br>
+
+        <label>Dept</label>
+        <input type="text" name="dept" value="<%= dept %>">
+
+         <!-- On click, will make a POST request to specified url -->
+        <input type="submit" value="Add">
+    </form>
+
+    <!-- Links back to the home page (home.html) -->
+    <a href="/">Home</p>
+</body>

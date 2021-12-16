@@ -8,29 +8,32 @@
 </style>
 
 <body>
-    <h1>Students studying <%= mid %></h1>
+    <h1>Lecturers</h1>
+
+    <!-- Button used to re-direct to the addLecturer page (GET request to '/addLecturer')-->
+    <button type="button"><a href="/addLecturer">Add Lecturer</a></button><br>
     <table>
         <tr>
-            <th>ID</th>
+            <th>Lecturer ID</th>
             <th>Name</th>
-            <th>GPA</th>
+            <th>Dept</th>
         </tr>
         <!-- Displays each object within the passed in array (from index.js)(EJS)-->
-        <% students.forEach((student)=> { %>
+        <% lecturers.forEach((lecturer)=> { %>
             <tr>
                 <td>
-                    <%= student.sid %>
+                    <%= lecturer._id %>
                 </td>
                 <td>
-                    <%= student.name %>
+                    <%= lecturer.name %>
                 </td>
                 <td>
-                    <%= student.gpa %>
+                    <%= lecturer.dept %>
                 </td>
             </tr>
             <% }) %>
     </table>
 
     <!-- Links back to the home page (home.html) -->
-    <a href="/">Home</p>
+    <p><a href="/">Home</p>
 </body>
