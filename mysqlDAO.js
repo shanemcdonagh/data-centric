@@ -161,19 +161,17 @@ function retrieveDepartment(dept){
     return new Promise((resolve,reject) =>{
         
         var myQuery = { 
-            sql: "SELECT dept from dept WHERE did = ?",
+            sql: "SELECT * from dept WHERE did = ?",
             values: [dept]
         }
         
         pool.query(myQuery)
         .then((data) => {
             // If returns match, pass along data
-            console.log("match")
             resolve(data);
         })
         .catch((error) => {
             // Else, pass along an error
-            console.log("fuck")
             reject(error);
         })
     })

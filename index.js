@@ -280,10 +280,12 @@ app.post('/addLecturer',
                                 // Reload the addLecturer page with list of errors (one) and pass in previously entered values
                                 res.render('addLecturer', { errors: errors, _id: req.body._id, name: req.body.name, dept: req.body.dept });
                             }
+
+                            console.log(error.message);
                         })
                 }
-                else {
-                    // Else, the department doesn't exist..
+                else if(errors.isEmpty() && data.length == 0){
+                    // Else, if there are no other errors listed and the department doesn't exist..
 
                     // Create object based on error message
                     err = { msg: "Dept doesn't exist" };
@@ -297,7 +299,6 @@ app.post('/addLecturer',
                 }
             })
             .catch((error) => {
-                // Send error response
-                res.send("Error while retrieving specified department");
+                console.log("" + error)
             })
     })
