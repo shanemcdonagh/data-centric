@@ -44,8 +44,8 @@ app.get('/students', (req, res) => {
             res.render("listStudents", { students: data });
         })
         .catch((error) => {
-            // Else, log error to screen
-            res.send('Error while retrieving students');
+            // Else, log error to screen (Server can't access the local database)
+            res.send('<h1>Error while retrieving students, ensure MySQL database is in use/exists</h1> <p><a href="/">Home</p>');
         })
 })
 
@@ -57,7 +57,7 @@ app.get('/students/delete/:sid', (req, res) => {
         .then((data) => {
             // If the user manually enters url parameter, which is incorrect
             if (data.length == 0) {
-                res.send("<h1>No such student with id = " + req.params.sid + "</h1>")
+                res.send('<h1>No such student with id = ' + req.params.sid + '</h1> <p><a href="/">Home</p>')
             }
             else {
                 // If successful, return to student page
@@ -66,7 +66,7 @@ app.get('/students/delete/:sid', (req, res) => {
         })
         .catch((error) => {
             // Else, send an error onscreen (MYSQL error)
-            res.send('<h1>Error: ' + req.params.sid + ' has associated modules, student cannot be deleted</h1>');
+            res.send('<h1>Error: ' + req.params.sid + ' has associated modules, student cannot be deleted</h1> <p><a href="/">Home</p>');
         })
 })
 
@@ -129,8 +129,8 @@ app.get('/modules', (req, res) => {
         })
         .catch((error) => {
 
-            // Else, log error message onscreen
-            res.send('Error while retrieving modules');
+            // Else, log error message onscreen and a link back to the home page
+            res.send('<h1>Error occured while retrieving modules, ensure MySQL database is in use/exists</h1> <p><a href="/">Home</p>');
         })
 })
 
@@ -143,7 +143,8 @@ app.get('/module/edit/:mid', (req, res) => {
 
             // If the user manually enters url parameter, which is incorrect
             if (data.length == 0) {
-                res.send("<h1>No such module with id = " + req.params.mid + "</h1>")
+                //Log error message onscreen and a link back to the home page
+                res.send('<h1>No such module with id = ' + req.params.mid + '</h1> <p><a href="/">Home</p>')
             }
             else {
                 // Pass retrieved data to editModule.ejs
@@ -152,8 +153,8 @@ app.get('/module/edit/:mid', (req, res) => {
 
         })
         .catch((error) => {
-            // Send error response
-            res.send("Error while retrieving specified module");
+            // Send error response alongside link to the home page
+            res.send('<h1>Error occured while retrieving specified module</h1> <p><a href="/">Home</p>');
         })
 
     // Listens for POST request to "/module/edit/:mid" (from editModule.ejs)
@@ -184,8 +185,8 @@ app.get('/module/edit/:mid', (req, res) => {
                     })
                     .catch((error) => {
 
-                        // Else, log error to screen
-                        res.send("<h1>Cannot update module</h1>")
+                        // Else, log error to screen alongside link to the home page
+                        res.send('<h1>Cannot update module ' + error + '</h1> <p><a href="/">Home</p>')
                     })
             }
         }
@@ -199,13 +200,20 @@ app.get('/module/students/:mid', (req, res) => {
     mysql.studyingModule(req.params.mid)
         .then((data) => {
 
-            // If successful, render the listStudying page and pass in the data retrieved from the database
-            res.render("listStudying", { mid: req.params.mid, students: data })
+            // If data returned is empty..
+            if (data.length == 0) {
+                // Log message to screen, alongside link to home page
+                res.send('<h1>No student is currently studying this module</h1> <p><a href="/">Home</p>')
+            }
+            else {
+                // Render the listStudying page and pass in the data retrieved from the database
+                res.render("listStudying", { mid: req.params.mid, students: data })
+            }
         })
         .catch((error) => {
 
-            // Else, notify user of error
-            res.send("Cannot retrieve list of students studying " + req.params.mid);
+            // Else, notify user of error alongside link to the home page
+            res.send('<h1>Cannot retrieve list of students studying ' + req.params.mid + '</h1> <p><a href="/">Home</p>');
         })
 })
 
@@ -284,7 +292,7 @@ app.post('/addLecturer',
                             console.log(error.message);
                         })
                 }
-                else if(errors.isEmpty() && data.length == 0){
+                else if (errors.isEmpty() && data.length == 0) {
                     // Else, if there are no other errors listed and the department doesn't exist..
 
                     // Create object based on error message
